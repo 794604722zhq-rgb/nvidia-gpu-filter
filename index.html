@@ -12,7 +12,7 @@
     header { padding:28px max(20px, calc((100% - 1500px)/2)); background:linear-gradient(120deg,#173f25,var(--brand)); color:#fff; }
     h1 { margin:0 0 6px; font-size:28px; } header p { margin:0; opacity:.9; }
     main { max-width:1500px; margin:0 auto; padding:20px; }
-    .filters { display:grid; grid-template-columns:2fr repeat(5,minmax(130px,1fr)); gap:12px; padding:16px; background:var(--panel); border:1px solid var(--line); border-radius:12px; }
+    .filters { display:grid; grid-template-columns:2fr repeat(4,minmax(125px,1fr)); gap:12px; padding:16px; background:var(--panel); border:1px solid var(--line); border-radius:12px; }
     label { display:grid; gap:5px; color:var(--muted); font-size:12px; } input,select,button { font:inherit; } input,select { min-width:0; padding:9px 10px; border:1px solid var(--line); border-radius:7px; background:var(--bg); color:var(--ink); }
     .check { display:flex; align-items:center; gap:7px; padding-top:20px; font-size:13px; color:var(--ink); } .check input { width:16px; height:16px; }
     button { align-self:end; padding:9px 14px; border:1px solid var(--brand); border-radius:7px; color:var(--brand); background:transparent; cursor:pointer; } button:hover { background:var(--soft); }
@@ -32,13 +32,14 @@
       <label>架构<select id="architecture"><option value="">全部架构</option></select></label>
       <label>形态<select id="form"><option value="">全部形态</option></select></label>
       <label>部署场景<select id="deployment"><option value="">全部场景</option></select></label>
-      <label>最低显存 (GB)<select id="memory"><option value="0">不限</option><option value="16">16+</option><option value="24">24+</option><option value="48">48+</option><option value="80">80+</option><option value="141">141+</option><option value="192">192+</option></select></label>
-      <label>最高功耗 (W)<select id="power"><option value="">不限</option><option value="100">100 以下</option><option value="200">200 以下</option><option value="300">300 以下</option><option value="400">400 以下</option><option value="700">700 以下</option></select></label>
-      <label>排序<select id="sort"><option value="name">型号</option><option value="memoryDesc">显存（高到低）</option><option value="powerAsc">功耗（低到高）</option><option value="fp32Desc">FP32（高到低）</option></select></label>
+      <label>最低显存 (GB)<select id="memory"><option value="0">不限</option><option value="8">8+</option><option value="16">16+</option><option value="20">20+</option><option value="24">24+</option><option value="32">32+</option><option value="48">48+</option><option value="64">64+</option><option value="80">80+</option><option value="96">96+</option><option value="141">141+</option><option value="192">192+</option><option value="288">288+</option></select></label>
+      <label>最高功耗 (W)<select id="power"><option value="">不限</option><option value="70">70 以下</option><option value="75">75 以下</option><option value="100">100 以下</option><option value="150">150 以下</option><option value="200">200 以下</option><option value="250">250 以下</option><option value="300">300 以下</option><option value="400">400 以下</option><option value="700">700 以下</option><option value="1000">1,000 以下</option><option value="1500">1,500 以下</option></select></label>
+      <label>排序<select id="sort"><option value="name">型号</option><option value="memoryDesc">显存（高到低）</option><option value="memoryAsc">显存（低到高）</option><option value="bandwidthDesc">带宽（高到低）</option><option value="powerAsc">功耗（低到高）</option><option value="powerDesc">功耗（高到低）</option><option value="fp32Desc">FP32（高到低）</option><option value="tensorDesc">Tensor（高到低）</option></select></label>
       <label class="check"><input id="excludeConsumer" type="checkbox" checked>隐藏指定消费级卡</label>
+      <label class="check"><input id="hideUnknown" type="checkbox">隐藏关键参数缺失条目</label>
       <button id="reset" type="button">重置筛选</button>
     </section>
-    <div class="summary"><span id="count"></span><span>提示：可横向滚动查看完整规格；“—”代表没有采用同口径数据。</span></div>
+    <div class="summary"><span id="count"></span><span>显存按“单颗 GPU 容量”筛选（多 GPU 板卡取单颗口径）；“—”表示无同口径数据，无数据条目在排序中恒排末尾。</span></div>
     <div class="table-wrap"><table><thead><tr><th>产品 / 模组</th><th>架构</th><th>形态</th><th class="center">GPU 数</th><th>显存配置</th><th class="num">带宽</th><th class="num">最大功耗</th><th class="num">FP32</th><th>Tensor</th><th>适用部署</th><th>关键说明</th><th class="center">来源</th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty" hidden>没有匹配项，请放宽筛选条件。</div></div>
   </main>
   <script>window.GPU_DATA = [
@@ -115,7 +116,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "989 稠密 / 1,979 含稀疏",
     "适用部署": "HGX H200",
     "关键说明": "适用于 4/8 GPU HGX；支持 NVLink 900GB/s",
-    "官方来源": "https://www.nvidia.com/en-gb/data-center/h200/"
+    "官方来源": "https://www.nvidia.com/en-us/data-center/h200/"
   },
   {
     "产品 / 模组": "H200 PCIe",
@@ -130,7 +131,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "756 稠密 / 1,513 含稀疏",
     "适用部署": "MGX / 通用服务器",
     "关键说明": "PCIe Gen5；可用 2/4 路 NVLink Bridge",
-    "官方来源": "https://www.nvidia.com/en-gb/data-center/h200/"
+    "官方来源": "https://www.nvidia.com/en-us/data-center/h200/"
   },
   {
     "产品 / 模组": "H100 SXM",
@@ -172,10 +173,10 @@
     "带宽 (GB/s)": "2,039",
     "最大功耗 (W)": "400",
     "FP32 (TFLOPS)": "19.5",
-    "BF16/FP16 Tensor (TFLOPS)": "156 稠密 / 312 含稀疏",
+    "BF16/FP16 Tensor (TFLOPS)": "312 稠密 / 624 含稀疏",
     "适用部署": "HGX A100",
-    "关键说明": "适用于 NVSwitch/HGX 互连配置",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "适用于 NVSwitch/HGX 互连配置；600GB/s NVLink",
+    "官方来源": "https://www.nvidia.com/en-us/data-center/a100/"
   },
   {
     "产品 / 模组": "A100 PCIe 80GB",
@@ -187,10 +188,10 @@
     "带宽 (GB/s)": "1,935",
     "最大功耗 (W)": "300",
     "FP32 (TFLOPS)": "19.5",
-    "BF16/FP16 Tensor (TFLOPS)": "156 稠密 / 312 含稀疏",
+    "BF16/FP16 Tensor (TFLOPS)": "312 稠密 / 624 含稀疏",
     "适用部署": "通用服务器",
-    "关键说明": "显存带宽低于 SXM 版",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "显存带宽低于 SXM 版；NVLink Bridge 支持 2 卡",
+    "官方来源": "https://www.nvidia.com/en-us/data-center/a100/"
   },
   {
     "产品 / 模组": "A30",
@@ -198,14 +199,14 @@
     "形态": "PCIe 双槽被动散热",
     "GPU 数": 1,
     "CUDA 计算能力": "8.0",
-    "显存配置": "24GB HBM2e",
+    "显存配置": "24GB HBM2",
     "带宽 (GB/s)": "933",
     "最大功耗 (W)": "165",
     "FP32 (TFLOPS)": "10.3",
     "BF16/FP16 Tensor (TFLOPS)": "165 稠密 / 330 含稀疏",
     "适用部署": "推理 / 主流训练",
-    "关键说明": "支持 MIG；面向企业数据中心",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "支持 MIG（最多 4 实例）；NVLink 200GB/s",
+    "官方来源": "https://www.nvidia.com/en-us/data-center/products/a30-gpu/"
   },
   {
     "产品 / 模组": "L40S",
@@ -217,10 +218,10 @@
     "带宽 (GB/s)": "864",
     "最大功耗 (W)": "350",
     "FP32 (TFLOPS)": "91.6",
-    "BF16/FP16 Tensor (TFLOPS)": "362 稠密 / 733 含稀疏",
+    "BF16/FP16 Tensor (TFLOPS)": "366.5 稠密 / 733 含稀疏",
     "适用部署": "推理 / 图形 / VDI",
     "关键说明": "无 MIG、无 NVLink；带显示接口",
-    "官方来源": "https://www.nvidia.com/en-eu/data-center/l40s/"
+    "官方来源": "https://www.nvidia.com/en-us/data-center/l40s/"
   },
   {
     "产品 / 模组": "L4",
@@ -235,7 +236,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "121 稠密 / 242 含稀疏",
     "适用部署": "视频 / 推理",
     "关键说明": "高密度、低功耗推理卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "A16",
@@ -250,7 +251,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "4×17.9（稠密）",
     "适用部署": "VDI / vGPU",
     "关键说明": "四颗独立 GPU；表中显存、算力须按单 GPU 或整卡分别理解",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "A10",
@@ -262,10 +263,10 @@
     "带宽 (GB/s)": "600",
     "最大功耗 (W)": "150",
     "FP32 (TFLOPS)": "31.2",
-    "BF16/FP16 Tensor (TFLOPS)": "125（含稀疏口径）",
+    "BF16/FP16 Tensor (TFLOPS)": "125 稠密 / 250 含稀疏",
     "适用部署": "图形 / 推理 / VDI",
     "关键说明": "企业推理与虚拟工作站",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://www.nvidia.com/en-us/data-center/products/a10-gpu/"
   },
   {
     "产品 / 模组": "A2",
@@ -275,12 +276,12 @@
     "CUDA 计算能力": "8.6",
     "显存配置": "16GB GDDR6",
     "带宽 (GB/s)": "200",
-    "最大功耗 (W)": "70",
+    "最大功耗 (W)": "60",
     "FP32 (TFLOPS)": "4.5",
     "BF16/FP16 Tensor (TFLOPS)": "18",
     "适用部署": "边缘推理",
-    "关键说明": "低功耗企业推理卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "低功耗企业推理卡；TDP 60W",
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "T4",
@@ -295,7 +296,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "65",
     "适用部署": "推理 / 视频 / VDI",
     "关键说明": "上一代广泛部署的推理卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "V100 SXM2 32GB",
@@ -310,7 +311,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "125",
     "适用部署": "HPC / 训练（存量）",
     "关键说明": "存量 HGX / DGX 生态",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "RTX PRO 6000 Blackwell",
@@ -385,7 +386,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "Grace Hopper 服务器",
     "关键说明": "集成 CPU/GPU 平台；与离散卡分开规划",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "H200 NVL",
@@ -396,11 +397,11 @@
     "显存配置": "141GB HBM3e",
     "带宽 (GB/s)": "4,800",
     "最大功耗 (W)": "最高600（可配置）",
-    "FP32 (TFLOPS)": "51",
-    "BF16/FP16 Tensor (TFLOPS)": "756 稠密 / 1,513 含稀疏",
+    "FP32 (TFLOPS)": "60",
+    "BF16/FP16 Tensor (TFLOPS)": "1,671 稠密 / 3,341 含稀疏",
     "适用部署": "LLM 推理",
-    "关键说明": "H200 NVL 由两卡 NVLink 配对部署",
-    "官方来源": "https://www.nvidia.com/en-gb/data-center/h200/"
+    "关键说明": "2 或 4 路 NVLink Bridge，900GB/s/GPU；最多 8 卡 MGX",
+    "官方来源": "https://www.nvidia.com/en-us/data-center/h200/"
   },
   {
     "产品 / 模组": "H100 NVL",
@@ -409,12 +410,12 @@
     "GPU 数": 1,
     "CUDA 计算能力": "9.0",
     "显存配置": "94GB HBM3",
-    "带宽 (GB/s)": "—",
-    "最大功耗 (W)": "—",
-    "FP32 (TFLOPS)": "—",
-    "BF16/FP16 Tensor (TFLOPS)": "—",
+    "带宽 (GB/s)": "3,900",
+    "最大功耗 (W)": "350-400（可配置）",
+    "FP32 (TFLOPS)": "60",
+    "BF16/FP16 Tensor (TFLOPS)": "1,671 稠密 / 3,341 含稀疏",
     "适用部署": "LLM 推理",
-    "关键说明": "H100 NVL 属于双 GPU NVLink 配对方案",
+    "关键说明": "单节点含 2 颗 GPU，共 188GB、7.8TB/s；NVLink 600GB/s",
     "官方来源": "https://www.nvidia.com/en-us/data-center/h100/"
   },
   {
@@ -427,10 +428,10 @@
     "带宽 (GB/s)": "3,350",
     "最大功耗 (W)": "700",
     "FP32 (TFLOPS)": "67",
-    "BF16/FP16 Tensor (TFLOPS)": "989",
+    "BF16/FP16 Tensor (TFLOPS)": "989 稠密 / 1,979 含稀疏",
     "适用部署": "中国特供 / 存量",
-    "关键说明": "NVLink 带宽受限；按目标地区 SKU 核验",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "算力与 H100 SXM 同档，NVLink 带宽受限（400GB/s）",
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "H800 PCIe 80GB",
@@ -442,25 +443,25 @@
     "带宽 (GB/s)": "2,000",
     "最大功耗 (W)": "350",
     "FP32 (TFLOPS)": "51",
-    "BF16/FP16 Tensor (TFLOPS)": "756",
+    "BF16/FP16 Tensor (TFLOPS)": "756 稠密 / 1,513 含稀疏",
     "适用部署": "中国特供 / 存量",
-    "关键说明": "NVLink 带宽受限；按目标地区 SKU 核验",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "算力与 H100 PCIe 同档，NVLink 带宽受限",
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "H20",
     "架构": "Hopper",
-    "形态": "PCIe / 服务器加速器",
+    "形态": "SXM（8-way HGX）",
     "GPU 数": 1,
     "CUDA 计算能力": "9.0",
     "显存配置": "96GB HBM3",
     "带宽 (GB/s)": "4,000",
     "最大功耗 (W)": "400",
-    "FP32 (TFLOPS)": "44.4",
-    "BF16/FP16 Tensor (TFLOPS)": "148",
+    "FP32 (TFLOPS)": "44",
+    "BF16/FP16 Tensor (TFLOPS)": "148（稠密）",
     "适用部署": "中国特供推理",
-    "关键说明": "FP8 约296 TFLOPS；当前可用性依地区政策变化",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "FP8 约 296 TFLOPS；NVLink 900GB/s；可用性依地区政策变化",
+    "官方来源": "https://www.nvidia.com/en-us/data-center/h20/"
   },
   {
     "产品 / 模组": "L40",
@@ -472,10 +473,10 @@
     "带宽 (GB/s)": "864",
     "最大功耗 (W)": "300",
     "FP32 (TFLOPS)": "90.5",
-    "BF16/FP16 Tensor (TFLOPS)": "362 稠密 / 733 含稀疏",
+    "BF16/FP16 Tensor (TFLOPS)": "181 稠密 / 362 含稀疏",
     "适用部署": "AI / 图形 / vGPU",
-    "关键说明": "L40S 的近似前代定位；请以具体数据表核验",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "L40S 的前代定位；无 MIG、无 NVLink",
+    "官方来源": "https://images.nvidia.com/content/Solutions/data-center/vgpu-L40-datasheet.pdf"
   },
   {
     "产品 / 模组": "L20",
@@ -483,14 +484,14 @@
     "形态": "PCIe 服务器加速器",
     "GPU 数": 1,
     "CUDA 计算能力": "8.9",
-    "显存配置": "48GB GDDR6",
-    "带宽 (GB/s)": "448",
+    "显存配置": "48GB GDDR6 ECC",
+    "带宽 (GB/s)": "864",
     "最大功耗 (W)": "275",
-    "FP32 (TFLOPS)": "59.4",
-    "BF16/FP16 Tensor (TFLOPS)": "约475",
+    "FP32 (TFLOPS)": "59.8",
+    "BF16/FP16 Tensor (TFLOPS)": "119.5 稠密 / 239 含稀疏",
     "适用部署": "中国特供推理",
-    "关键说明": "中国特供型号；指标依厂商/地区 SKU 核验",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "中国特供型号；无 MIG、无 NVLink",
+    "官方来源": "https://docs.nvidia.com/vgpu/sizing/virtual-workstation/latest/gpus-vws.html"
   },
   {
     "产品 / 模组": "L2",
@@ -498,14 +499,14 @@
     "形态": "PCIe 低功耗服务器卡",
     "GPU 数": 1,
     "CUDA 计算能力": "8.9",
-    "显存配置": "24GB GDDR6",
+    "显存配置": "24GB GDDR6 ECC",
     "带宽 (GB/s)": "300",
-    "最大功耗 (W)": "70",
-    "FP32 (TFLOPS)": "约24",
-    "BF16/FP16 Tensor (TFLOPS)": "约193",
+    "最大功耗 (W)": "未公布",
+    "FP32 (TFLOPS)": "24.1",
+    "BF16/FP16 Tensor (TFLOPS)": "96.5（稠密）",
     "适用部署": "中国特供推理",
-    "关键说明": "低功耗推理卡；公开规格有限",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "单槽半高；官方未公布 TDP，公开规格有限",
+    "官方来源": "https://docs.nvidia.com/vgpu/sizing/virtual-workstation/latest/gpus-vws.html"
   },
   {
     "产品 / 模组": "A800 SXM 80GB",
@@ -517,10 +518,10 @@
     "带宽 (GB/s)": "2,039",
     "最大功耗 (W)": "400",
     "FP32 (TFLOPS)": "19.5",
-    "BF16/FP16 Tensor (TFLOPS)": "156 稠密 / 312 含稀疏",
+    "BF16/FP16 Tensor (TFLOPS)": "312 稠密 / 624 含稀疏",
     "适用部署": "中国特供 / 存量",
     "关键说明": "NVLink 带宽低于 A100；非消费级 SKU",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://www.nvidia.com/en-us/data-center/a100/"
   },
   {
     "产品 / 模组": "A800 PCIe 80GB",
@@ -532,10 +533,10 @@
     "带宽 (GB/s)": "1,935",
     "最大功耗 (W)": "300",
     "FP32 (TFLOPS)": "19.5",
-    "BF16/FP16 Tensor (TFLOPS)": "156 稠密 / 312 含稀疏",
+    "BF16/FP16 Tensor (TFLOPS)": "312 稠密 / 624 含稀疏",
     "适用部署": "中国特供 / 存量",
     "关键说明": "NVLink 带宽低于 A100；非消费级 SKU",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://www.nvidia.com/en-us/data-center/a100/"
   },
   {
     "产品 / 模组": "A100X",
@@ -550,7 +551,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "ARM 服务器",
     "关键说明": "GPU Operator 列为 ARM 平台支持产品，依整机配置核验",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "A30X",
@@ -565,7 +566,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "ARM 服务器",
     "关键说明": "GPU Operator 列为 ARM 平台支持产品，依整机配置核验",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "A40",
@@ -595,7 +596,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "125",
     "适用部署": "云推理 / 图形",
     "关键说明": "A10 云服务商变体；规格接近 A10",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "RTX 6000 Ada",
@@ -619,10 +620,10 @@
     "GPU 数": 1,
     "CUDA 计算能力": "8.9",
     "显存配置": "32GB GDDR6 ECC",
-    "带宽 (GB/s)": "576",
+    "带宽 (GB/s)": "578",
     "最大功耗 (W)": "250",
     "FP32 (TFLOPS)": "65.3",
-    "BF16/FP16 Tensor (TFLOPS)": "522（含稀疏）",
+    "BF16/FP16 Tensor (TFLOPS)": "261 稠密 / 522 含稀疏",
     "适用部署": "企业工作站 / vGPU",
     "关键说明": "企业专业图形与 AI；支持 vGPU",
     "官方来源": "https://docs.nvidia.com/vgpu/17.0/pdf/grid-vgpu-release-notes-citrix-xenserver.pdf"
@@ -655,7 +656,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "155",
     "适用部署": "企业工作站 / vGPU",
     "关键说明": "Ampere 专业工作站卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "RTX A5500",
@@ -670,7 +671,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "企业工作站 / vGPU",
     "关键说明": "NVIDIA vGPU 支持清单所列",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "RTX A5000",
@@ -685,7 +686,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "111",
     "适用部署": "企业工作站 / vGPU",
     "关键说明": "Ampere 专业工作站卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "RTX A4500",
@@ -700,7 +701,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "企业工作站",
     "关键说明": "专业工作站 SKU；采购前核验具体板卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "RTX A4000",
@@ -715,7 +716,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "77",
     "适用部署": "企业工作站 / vGPU",
     "关键说明": "Ampere 专业工作站卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "Tesla P100 SXM2",
@@ -730,7 +731,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "HPC / 存量",
     "关键说明": "存量 DGX/HGX 生态",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "Tesla P100 PCIe",
@@ -756,11 +757,11 @@
     "显存配置": "24GB GDDR5",
     "带宽 (GB/s)": "346",
     "最大功耗 (W)": "250",
-    "FP32 (TFLOPS)": "11.8",
+    "FP32 (TFLOPS)": "12",
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "推理 / vGPU（存量）",
-    "关键说明": "Pascal 数据中心卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "关键说明": "Pascal 数据中心卡；无 Tensor Core",
+    "官方来源": "https://www.nvidia.com/en-gb/deep-learning-ai/solutions/inference-platform/hpc/"
   },
   {
     "产品 / 模组": "Tesla P4",
@@ -775,7 +776,7 @@
     "BF16/FP16 Tensor (TFLOPS)": "—",
     "适用部署": "推理 / vGPU（存量）",
     "关键说明": "Pascal 低功耗卡",
-    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html"
+    "官方来源": "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html"
   },
   {
     "产品 / 模组": "Tesla P6",
@@ -931,26 +932,51 @@
   <script>
     const data = window.GPU_DATA || [];
     const $ = (id) => document.getElementById(id);
-    const fields = ["query","architecture","form","deployment","memory","power","sort","excludeConsumer"];
-    const num = (text) => { const matches = String(text).match(/\d+(?:\.\d+)?/g); return matches ? Math.max(...matches.map(Number)) : -1; };
+    const fields = ["query","architecture","form","deployment","memory","power","sort","excludeConsumer","hideUnknown"];
+    // 先剔除千分位逗号再取最大数值；"未公布"/"—" 等无数据返回 -1
+    const num = (text) => { const s = String(text).replace(/,(?=\d{3}\b)/g, ""); const matches = s.match(/\d+(?:\.\d+)?/g); return matches ? Math.max(...matches.map(Number)) : -1; };
+    // 显存按“单颗 GPU 可寻址容量”口径：多 GPU 板卡/整模组取单颗容量
+    // 支持 "2×288GB HBM3e"、"4x 16 GB GDDR6"、"32GB GDDR5（4×8GB）" 三种写法
+    const memPerGpu = (text) => {
+      const s = String(text).replace(/,(?=\d{3}\b)/g, "");
+      const multi = s.match(/(\d+)\s*[×x]\s*(\d+(?:\.\d+)?)\s*GB/i);
+      if (multi) return Number(multi[2]); // N×M GB → 每颗 GPU 为 M GB
+      return num(s);
+    };
+    const hasValue = (v) => { const s = String(v).trim(); return s && s !== "—" && s !== "-" && !/^—|^未公布|^系统级|^服务器 SKU|^依平台/.test(s); };
     const consumer = (row) => String(row["产品 / 模组"]).includes("GeForce");
     const addOptions = (id, key) => [...new Set(data.map(x => x[key]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"zh-CN")).forEach(v => { const o=document.createElement("option"); o.value=v; o.textContent=v; $(id).append(o); });
     addOptions("architecture","架构"); addOptions("form","形态"); addOptions("deployment","适用部署");
     function render() {
       const q = $("query").value.trim().toLowerCase(), arch=$("architecture").value, form=$("form").value, dep=$("deployment").value;
-      const minMem=Number($("memory").value), maxPower=$("power").value ? Number($("power").value) : Infinity, hideConsumer=$("excludeConsumer").checked;
+      const minMem=Number($("memory").value), maxPower=$("power").value ? Number($("power").value) : Infinity;
+      const hideConsumer=$("excludeConsumer").checked, hideUnknown=$("hideUnknown").checked;
       let rows = data.filter(r => {
         const hay=Object.values(r).join(" ").toLowerCase();
-        return (!q || hay.includes(q)) && (!arch || r["架构"]===arch) && (!form || r["形态"]===form) && (!dep || r["适用部署"]===dep) && (num(r["显存配置"])>=minMem) && (num(r["最大功耗 (W)"])<=maxPower || num(r["最大功耗 (W)"])<0 && maxPower===Infinity) && (!hideConsumer || !consumer(r));
+        const mem=memPerGpu(r["显存配置"]), pw=num(r["最大功耗 (W)"]);
+        const okMem = minMem===0 || (mem>=0 && mem>=minMem);
+        const okPower = maxPower===Infinity || (pw>=0 && pw<=maxPower);
+        const okKnown = !hideUnknown || (hasValue(r["带宽 (GB/s)"]) && hasValue(r["最大功耗 (W)"]) && hasValue(r["FP32 (TFLOPS)"]));
+        return (!q || hay.includes(q)) && (!arch || r["架构"]===arch) && (!form || r["形态"]===form) && (!dep || r["适用部署"]===dep) && okMem && okPower && okKnown && (!hideConsumer || !consumer(r));
       });
       const sort=$("sort").value;
-      rows.sort((a,b) => sort==="memoryDesc" ? num(b["显存配置"])-num(a["显存配置"]) : sort==="powerAsc" ? (num(a["最大功耗 (W)"])+9999*(num(a["最大功耗 (W)"])<0))-(num(b["最大功耗 (W)"])+9999*(num(b["最大功耗 (W)"])<0)) : sort==="fp32Desc" ? num(b["FP32 (TFLOPS)"])-num(a["FP32 (TFLOPS)"]) : String(a["产品 / 模组"]).localeCompare(String(b["产品 / 模组"]),"zh-CN"));
+      // 无数据的条目恒排在末尾，不参与数值比较
+      const desc=(key,fn)=>(a,b)=>{ const x=fn(a[key]), y=fn(b[key]); if(x<0&&y<0) return 0; if(x<0) return 1; if(y<0) return -1; return y-x; };
+      const asc=(key,fn)=>(a,b)=>{ const x=fn(a[key]), y=fn(b[key]); if(x<0&&y<0) return 0; if(x<0) return 1; if(y<0) return -1; return x-y; };
+      rows.sort((a,b) => sort==="memoryDesc" ? desc("显存配置",memPerGpu)(a,b)
+        : sort==="memoryAsc" ? asc("显存配置",memPerGpu)(a,b)
+        : sort==="bandwidthDesc" ? desc("带宽 (GB/s)",num)(a,b)
+        : sort==="powerAsc" ? asc("最大功耗 (W)",num)(a,b)
+        : sort==="powerDesc" ? desc("最大功耗 (W)",num)(a,b)
+        : sort==="fp32Desc" ? desc("FP32 (TFLOPS)",num)(a,b)
+        : sort==="tensorDesc" ? desc("BF16/FP16 Tensor (TFLOPS)",num)(a,b)
+        : String(a["产品 / 模组"]).localeCompare(String(b["产品 / 模组"]),"zh-CN"));
       $("count").innerHTML=`找到 <strong>${rows.length}</strong> / ${data.length} 个条目`;
-      $("rows").innerHTML=rows.map(r=>`<tr><td class="model">${r["产品 / 模组"]}${consumer(r)?'<span class="tag">指定消费级</span>':''}</td><td>${r["架构"]}</td><td>${r["形态"]}</td><td class="center">${r["GPU 数"]}</td><td>${r["显存配置"]}</td><td class="num">${r["带宽 (GB/s)"]}</td><td class="num">${r["最大功耗 (W)"]}</td><td class="num">${r["FP32 (TFLOPS)"]}</td><td>${r["BF16/FP16 Tensor (TFLOPS)"]}</td><td>${r["适用部署"]}</td><td class="note">${r["关键说明"]}</td><td class="source"><a href="${r["官方来源"]}" target="_blank" rel="noreferrer">官方链接</a></td></tr>`).join("");
+      $("rows").innerHTML=rows.map(r=>`<tr><td class="model">${r["产品 / 模组"]}${consumer(r)?'<span class="tag">指定消费级</span>':''}</td><td>${r["架构"]}</td><td>${r["形态"]}</td><td class="center">${r["GPU 数"]}</td><td>${r["显存配置"]}</td><td class="num">${r["带宽 (GB/s)"]}</td><td class="num">${r["最大功耗 (W)"]}</td><td class="num">${r["FP32 (TFLOPS)"]}</td><td>${r["BF16/FP16 Tensor (TFLOPS)"]}</td><td>${r["适用部署"]}</td><td class="note">${r["关键说明"]}</td><td class="source">${String(r["官方来源"]).split("|").map(u=>u.trim()).filter(Boolean).map((u,i)=>`<a href="${u}" target="_blank" rel="noreferrer">来源${String(r["官方来源"]).split("|").filter(x=>x.trim()).length>1?i+1:""}</a>`).join(" ")}</td></tr>`).join("");
       $("empty").hidden=rows.length!==0;
     }
     fields.forEach(id=>$(id).addEventListener(id==="query"?"input":"change",render));
-    $("reset").addEventListener("click",()=>{ $("query").value=""; $("architecture").value=""; $("form").value=""; $("deployment").value=""; $("memory").value="0"; $("power").value=""; $("sort").value="name"; $("excludeConsumer").checked=true; render(); });
+    $("reset").addEventListener("click",()=>{ $("query").value=""; $("architecture").value=""; $("form").value=""; $("deployment").value=""; $("memory").value="0"; $("power").value=""; $("sort").value="name"; $("excludeConsumer").checked=true; $("hideUnknown").checked=false; render(); });
     render();
   </script>
 </body>
