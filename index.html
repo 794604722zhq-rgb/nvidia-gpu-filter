@@ -329,19 +329,19 @@
     "官方来源": "https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-6000/"
   },
   {
-    "产品 / 模组": "RTX 6000D（待官方规格确认）",
+    "产品 / 模组": "RTX 6000D / RTX PRO 6000D（待官方规格确认）",
     "架构": "Blackwell",
-    "形态": "PCIe 专业工作站卡（公开资料）",
+    "形态": "PCIe 专业计算卡（无视频输出）",
     "GPU 数": 1,
     "CUDA 计算能力": "12.0（参考）",
-    "显存配置": "84GB GDDR7（公开资料）",
-    "带宽 (GB/s)": "约1,570（公开资料）",
+    "显存配置": "84GB GDDR7 ECC（28 颗 3GB 模组）",
+    "带宽 (GB/s)": "1,398",
     "最大功耗 (W)": "—",
-    "FP32 (TFLOPS)": "—",
-    "BF16/FP16 Tensor (TFLOPS)": "—",
+    "FP32 (TFLOPS)": "74（渠道资料）",
+    "BF16/FP16 Tensor (TFLOPS)": "—（FP4 593 / FP8 296 / FP16 148 TFLOPS；渠道资料）",
     "适用部署": "中国市场企业 AI / 工作站",
-    "关键说明": "NVIDIA 驱动支持清单确认型号存在；19,968 CUDA 核心、448-bit 位宽等参数来自第三方披露，尚无公开官方完整数据表",
-    "官方来源": "https://download.nvidia.com/XFree86/Linux-x86_64/595.45.04/README/supportedchips.html | https://www.tomshardware.com/pc-components/gpus/nvidia-rtx-pro-6000d-squeaks-ahead-of-rtx-5090d-in-geekbench-opencl-china-tailored-ai-card-still-performs-well-despite-regulatory-woes"
+    "关键说明": "RTX PRO 6000 的中国特供版；NVIDIA 官方驱动与开发者列表登记名为 RTX 6000D BSE（GB202-891）。渠道资料：84GB、1,398GB/s、FP4/FP8/FP16/FP32 = 593/296/148/74 TFLOPS（未标注稠密或含稀疏）。第三方公开口径：156 SM / 19,968 CUDA、448-bit、带宽 1,568GB/s（按 28Gbps 推算，若为 25Gbps 则约 1,400GB/s）、FP32 约 97 TFLOPS（按 2.43GHz 推算），功耗有的写 450W、有的写 600W。两套口径均未经 NVIDIA 官方数据表确认；无 NVLink、无 MIG、无视频输出。",
+    "官方来源": "https://download.nvidia.com/XFree86/Linux-x86_64/595.45.04/README/supportedchips.html | https://videocardz.com/newz/nvidia-rtx-6000d-with-84gb-gddr7-memory-appears-in-first-teardown-video"
   },
   {
     "产品 / 模组": "RTX PRO 6000 Blackwell Server Edition",
@@ -361,17 +361,17 @@
   {
     "产品 / 模组": "RTX PRO 4500 Blackwell Server Edition",
     "架构": "Blackwell",
-    "形态": "服务器 PCIe",
+    "形态": "服务器被动散热 PCIe（单槽 FHFL）",
     "GPU 数": 1,
     "CUDA 计算能力": "12.0",
-    "显存配置": "48GB GDDR7 ECC",
-    "带宽 (GB/s)": "—",
-    "最大功耗 (W)": "—",
-    "FP32 (TFLOPS)": "—",
-    "BF16/FP16 Tensor (TFLOPS)": "—",
+    "显存配置": "32GB GDDR7 ECC",
+    "带宽 (GB/s)": "800",
+    "最大功耗 (W)": "165",
+    "FP32 (TFLOPS)": "51",
+    "BF16/FP16 Tensor (TFLOPS)": "—（FP4 1,600 / FP8 811 / FP16·BF16 406 TFLOPS）",
     "适用部署": "企业 AI / vGPU",
-    "关键说明": "NVIDIA vWS 选型资料列为服务器 GPU；具体 SKU 规格待采购前核验",
-    "官方来源": "https://docs.nvidia.com/vgpu/sizing/virtual-workstation/latest/gpus-vws.html"
+    "关键说明": "官方数据中心版：10,496 CUDA、256-bit、MIG 最多 2 实例 @16GB、3×NVENC / 3×NVDEC、支持机密计算；较工作站版功耗 200W→165W、带宽 896→800GB/s（显存等效速率降至 25Gbps）",
+    "官方来源": "https://www.nvidia.com/en-us/data-center/rtx-pro-4500-blackwell-server-edition/"
   },
   {
     "产品 / 模组": "RTX PRO 6000 Blackwell Max-Q Workstation Edition",
@@ -397,10 +397,10 @@
     "显存配置": "84GB GDDR7 ECC",
     "带宽 (GB/s)": "1,398",
     "最大功耗 (W)": "最高600",
-    "FP32 (TFLOPS)": "—",
-    "BF16/FP16 Tensor (TFLOPS)": "—",
+    "FP32 (TFLOPS)": "105（渠道资料）",
+    "BF16/FP16 Tensor (TFLOPS)": "—（FP4 1,188 / FP8 594 / FP16 297 TFLOPS；渠道资料）",
     "适用部署": "企业工作站 / 机架式工作站",
-    "关键说明": "官方页标注 Coming Soon 且规格为 preliminary，未公布算力数值；21,760 CUDA 核心、位宽 416-bit（另有来源写 448-bit）来自第三方披露；支持 MIG 最多 2 实例",
+    "关键说明": "官方页仍标注 preliminary 规格（84GB、1,398GB/s、最高 600W、3×NVENC、3×NVDEC、MIG 2 实例）且未公布算力数值。渠道资料给出 FP4/FP8/FP16/FP32 = 1188/594/297/105 TFLOPS（未标注稠密或含稀疏），称算力约为 RTX PRO 6000D 的两倍，并称预计 2026 Q4 完成引入测试、2027 Q1 可正式销售、定位为中国市场可合规销售型号。第三方另称 21,760 CUDA 核心、位宽 416-bit 或 448-bit，官方未公布。",
     "官方来源": "https://www.nvidia.com/en-us/products/workstations/professional-desktop-gpus/rtx-pro-5500/"
   },
   {
@@ -1041,11 +1041,14 @@
     // 先剔除千分位逗号再取最大数值；"未公布"/"—" 等无数据返回 -1
     const num = (text) => { const s = String(text).replace(/,(?=\d{3}\b)/g, ""); const matches = s.match(/\d+(?:\.\d+)?/g); return matches ? Math.max(...matches.map(Number)) : -1; };
     // 显存按“单颗 GPU 可寻址容量”口径：多 GPU 板卡/整模组取单颗容量
-    // 支持 "2×288GB HBM3e"、"4x 16 GB GDDR6"、"32GB GDDR5（4×8GB）" 三种写法
+    // 支持 "2×288GB HBM3e"、"4x 16 GB GDDR6"、"32GB GDDR5（4×8GB）" 三种写法；
+    // 显存颗粒写法（"84GB GDDR7（28 颗 3GB 模组）"）按首个总容量取值
     const memPerGpu = (text) => {
       const s = String(text).replace(/,(?=\d{3}\b)/g, "");
+      // 仅当 "N×M GB" 中的 N 像 GPU 颗数（2-8）、M 像单卡容量（≥8GB）时才按单卡取值，
+      // 避免把显存颗粒写法（如「28×3GB」＝28 颗 3GB 颗粒）误判为单卡 3GB
       const multi = s.match(/(\d+)\s*[×x]\s*(\d+(?:\.\d+)?)\s*GB/i);
-      if (multi) return Number(multi[2]); // N×M GB → 每颗 GPU 为 M GB
+      if (multi) { const n = Number(multi[1]), m = Number(multi[2]); if (n >= 2 && n <= 8 && m >= 8) return m; }
       return num(s);
     };
     const hasValue = (v) => { const s = String(v).trim(); return s && s !== "—" && s !== "-" && !/^—|^未公布|^系统级|^服务器 SKU|^依平台/.test(s); };
